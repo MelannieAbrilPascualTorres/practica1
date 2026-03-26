@@ -5,10 +5,6 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Dict
 import os
 
-def main():
-    print("Hello from practica1!")
-
-
 class GestorTareas:
     def __init__(self, uri: str = 'mongodb://localhost:27017/'):
         """Inicializar conexión a MongoDB"""
@@ -58,7 +54,7 @@ class GestorTareas:
             return None
     
     def crear_tarea(self, usuario_id: str, titulo: str, descripcion: str = "", 
-                   fecha_limite: Optional[datetime] = None) -> Optional[str]:
+                    fecha_limite: Optional[datetime] = None) -> Optional[str]:
         """Crear una nueva tarea para un usuario"""
         # Verificar que el usuario existe
         if not self.obtener_usuario(usuario_id):
@@ -246,6 +242,3 @@ def ejemplo_uso():
 if __name__ == "__main__":
     ejemplo_uso()
 
-
-if __name__ == "__main__":
-    main()
