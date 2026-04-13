@@ -1,3 +1,5 @@
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+import requests
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
@@ -239,6 +241,10 @@ def ejemplo_uso():
     # Cerrar conexión
     gestor.cerrar_conexion()
 
+@main.route('/')
+def inicio():
+    return render_template('ini.html')
+
 if __name__ == "__main__":
-    ejemplo_uso()
+    main.run(debug=True)
 
