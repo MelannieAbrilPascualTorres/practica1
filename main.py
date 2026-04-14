@@ -7,6 +7,26 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Dict
 import os
 
+app = Flask(__name__)
+
+app.secret_key = "clavececr3ta_xx23"
+
+@app.route('/')
+def inicio():
+    return render_template('inicio.html')
+
+@app.route('/log')
+def log():
+    return render_template('log.html')
+
+@app.route('/registro')
+def registro():
+    return render_template('registro.html')
+
+@app.route('/tareas')
+def tareas():
+    return render_template('tareas.html', tareas=[])
+
 class GestorTareas:
     def __init__(self, uri: str = 'mongodb://localhost:27017/'):
         """Inicializar conexión a MongoDB"""
@@ -241,10 +261,8 @@ def ejemplo_uso():
     # Cerrar conexión
     gestor.cerrar_conexion()
 
-@main.route('/')
-def inicio():
-    return render_template('ini.html')
 
-if __name__ == "__main__":
-    main.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
