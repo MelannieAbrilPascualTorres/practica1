@@ -20,13 +20,14 @@ class GestorTareas:
         self.usuarios.create_index("email", unique=True)
         self.tareas.create_index([("usuario_id", 1), ("fecha_creacion", -1)])
         self.tareas.create_index("estado")
-    
-    def crear_usuario(self, nombre: str, email: str) -> Optional[str]:
+
+    def crear_usuario(self, nombre: str, email: str, password: str) -> Optional[str]:
         """Crear un nuevo usuario"""
         try:
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "email": email,
+                "password": password,
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
