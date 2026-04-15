@@ -12,9 +12,10 @@
 <body>
     <div class="container-fluid">
         <header class="row pt-5">
- <nav class="navbar navbar-expand-lg bg-success navbar-dark fixed-top">
+            <nav class="navbar navbar-expand-lg bg-danger navbar-dark fixed-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand text-light d-flex align-items-center" href="#">Gestor de Tareas
+                    <a class="navbar-brand text-light d-flex align-items-center" href="#"> 
+                        Gestor de tareas
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -28,20 +29,9 @@
                                     href="http://127.0.0.1:5000">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/educacion">Educación e
-                                    información</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Herramientas
-                                </a>
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/educacion">NS</a>
                             </li>
                             {% if session.get('logueado') %}
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/modulo3">Banco de recetas</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                             </li>
                             {% else %}
@@ -63,9 +53,9 @@
             {% endblock %}
         </main>
 
-        <footer class="row text-light text-center py-4 bg-success mt-5">
+        <footer class="row text-light text-center py-4 bg-danger mt-5">
             <div class="col-12">
-                <h6>@Derechos reservados 2025</h6>
+                <h6>b</h6>
             </div>
         </footer>
     </div>
