@@ -28,17 +28,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="http://127.0.0.1:5000/inicio">Inicio</a>
                             </li>
-                                <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="http://127.0.0.1:5000/principal">Tareas</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/log">Registrarse</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active text-light" aria-current="page"
-                                    href="http://127.0.0.1:5000">Iniciar sesion</a>
+                                <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                             </li>
                     {% endif %}
                         </ul>

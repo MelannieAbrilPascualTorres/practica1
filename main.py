@@ -65,7 +65,7 @@ def validar():
     
     return redirect(url_for('sesion'))
 
-@app.route("/logout")
+@app.route("/log")
 def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')

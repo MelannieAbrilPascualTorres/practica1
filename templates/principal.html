@@ -1,52 +1,27 @@
 {% extends "base.html" %}
 
-{% block titulo %}Iniciar sesion{% endblock %}
+{% block titulo %}Calculadora de Tasa Metabólica Basal{% endblock %}
 
 {% block contenido %}
 
-<div class="container pt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card text-bg-light p-4">
-        <h2 class="text-center mb-4">Iniciar Sesión</h2>
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %}
-        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show"
-          role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<section class="container pt-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-12 col-md-6">
+            <div class="card text-bg-light mb-3">
+                <div class="card-header">Calculadora de Tasa Metabólica Basal (TMB)</div>
+                <div class="card-body">
+                    <h5 class="card-title">¿Qué es la Tasa Metabólica Basal?</h5>
+                    <p>La TMB indica cuantas calorias usa tu cuerpo solo para mantenerse vivo, incluso cuando estas en reposo. Conocer este valor nos permite saber cuantas calorías necesitamos como minimo cada dia.</p>
+                    <p>Ingresa tus datos para obtener tu TMB (Ingresa el numero solo)</p>
+                </div>
+            </div>
         </div>
-        {% endfor %} {% endif %} {% endwith %} {% if session.get('logueado') %}
-        <div class="text-center">
-          <h4>¡Hola {{ session.get('usuario') }}!</h4>
-          <p>Ya has iniciado sesión.</p>
-          <a href="{{ url_for('logout') }}" class="btn btn-warning">Cerrar Sesión</a>
+
+        <div class="col-12 col-md-6">
+            <img src="{{ url_for('static', filename='img/tmb.jpg') }}" class="img-fluid rounded-4"
+                alt="Dibujo de una persona revisando su TMB en una tablet.">
         </div>
-        {% else %}
-        <form method="post" action="{{ url_for('validar') }}">
-          <div class="mb-3">
-            <input type="email" class="form-control" name="correo" placeholder="Correo electrónico" required
-              value="{{ request.form.get('correo', '') }}" />
-          </div>
-          <div class="mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Contraseña" required />
-          </div>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">
-              Iniciar Sesión
-            </button>
-          </div>
-        </form>
-        <div class="text-center mt-3">
-          <p>
-            ¿No tienes cuenta?
-            <a href="{{ url_for('registro') }}">Regístrate aquí</a>
-          </p>
-        </div>
-        {% endif %}
-      </div>
     </div>
-  </div>
-</div>
+</section>
 
 {% endblock %}
