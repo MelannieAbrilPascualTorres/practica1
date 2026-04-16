@@ -31,9 +31,9 @@ def log():
 def inicio():
     return render_template('inicio.html')
 
-@app.route('/tareas')
+@app.route('/principal')
 def tareas():
-    return render_template('tareas.html', tareas=[])
+    return render_template('principal.html', tareas=[])
 
 @app.route('/contraseña')
 def contraseña():

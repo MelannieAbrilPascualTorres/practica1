@@ -22,26 +22,25 @@
                         aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    {% if session.get('logueado') %}
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active text-light" aria-current="page"
-                                    href="http://127.0.0.1:5000">Inicio</a>
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/inicio">Inicio</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/´principal">NS</a>
-                            </li>
-                            {% if session.get('logueado') %}
                                 <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                             </li>
                             <li class="nav-item">
-                            {% else %}
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/principal">Tareas</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-light" href="http://127.0.0.1:5000/log">Registrarse</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/sesion">Iniciar sesion</a>
+                                <a class="nav-link active text-light" aria-current="page"
+                                    href="http://127.0.0.1:5000">Iniciar sesion</a>
                             </li>
-                            {% endif %}
+                    {% endif %}
                         </ul>
                     </div>
                 </div>
