@@ -6,9 +6,14 @@
 
 <div class="container pt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="card text-bg-light p-4">
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <div class="text-center mb-3">
+          <img src="{{ url_for('static', filename='img/1000110823.png') }}" class="img-fluid rounded-4"
+                alt="icono">
+        </div>
+
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %}
         <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show"
@@ -32,12 +37,17 @@
             <input type="password" class="form-control" name="password" placeholder="Contraseña" required />
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-danger">
               Iniciar Sesión
             </button>
           </div>
+
         </form>
         <div class="text-center mt-3">
+          <p>
+            ¿Olvidaste tu contraseña?
+            <a href="{{ url_for('contraseña') }}">Recuperar contraseña</a>
+          </p>
           <p>
             ¿No tienes cuenta?
             <a href="{{ url_for('registro') }}">Regístrate aquí</a>

@@ -11,21 +11,33 @@ app = Flask(__name__)
 
 app.secret_key = "clavececr3ta_xx23"
 
+USUARIOS_REGISTRADOS = {
+    'mel@correo.com':{
+        'password': "mel123",
+        'nombre': "melannie",
+        'correo': "mel@correo.com",
+    }
+}
+
 @app.route('/')
-def inicio():
-    return render_template('inicio.html')
+def registro():
+    return render_template('sesion.html')
 
 @app.route('/log')
 def log():
     return render_template('log.html')
 
-@app.route('/registro')
-def registro():
-    return render_template('registro.html')
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
 
 @app.route('/tareas')
 def tareas():
     return render_template('tareas.html', tareas=[])
+
+@app.route('/contraseña')
+def contraseña():
+    return render_template('contraseña.html')
 
 @app.route('/validaLogin', methods=['GET','POST'])
 def validar():
@@ -34,7 +46,7 @@ def validar():
         password = request.form.get("password", '')
         if not correo or not password:
             flash('Por favor ingresa email y contraseña', 'error')
-            return render_template('iniciar.html')
+            return render_template('inicio.html')
         
         elif correo in USUARIOS_REGISTRADOS:
             usuario = USUARIOS_REGISTRADOS[correo]
@@ -43,21 +55,21 @@ def validar():
                 session['usuario'] = usuario['nombre']
                 session['usuario_correo'] = correo
                 flash(f'¡Bienvenido {usuario["nombre"]}!', 'success')
-                return redirect(url_for('index'))
+                return redirect(url_for('inicio'))
             else:
                 flash('Contraseña incorrecta', 'error')
         else:
             flash('Usuario no encontrado', 'error')
         
-        return render_template('iniciar.html')
+        return render_template('sesion.html')
     
-    return redirect(url_for('iniciar'))
+    return redirect(url_for('sesion'))
 
 @app.route("/logout")
 def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')
-    return redirect(url_for('index'))
+    return redirect(url_for('inicio'))
 
 class GestorTareas:
     def __init__(self, uri: str = 'mongodb://localhost:27017/'):

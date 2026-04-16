@@ -29,17 +29,17 @@
                                     href="http://127.0.0.1:5000">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/educacion">NS</a>
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/´principal">NS</a>
                             </li>
                             {% if session.get('logueado') %}
                                 <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                             </li>
-                            {% else %}
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/registro">Registrarse</a>
+                            {% else %}
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/log">Registrarse</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/iniciar">Iniciar sesion</a>
+                                <a class="nav-link text-light" href="http://127.0.0.1:5000/sesion">Iniciar sesion</a>
                             </li>
                             {% endif %}
                         </ul>
