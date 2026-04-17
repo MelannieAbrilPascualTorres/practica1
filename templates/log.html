@@ -29,13 +29,13 @@
                             <div class="col text-start">
                                 <label for="nombre" class="form-label fw-medium">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="Ej: María" required minlength="2" maxlength="20"
+                                    placeholder="María" required minlength="2" maxlength="20"
                                     value="{{ request.form.get('nombre', '')}}">
                             </div>
                             <div class="col text-start">
                                 <label for="apellido" class="form-label fw-medium">Apellido</label>
                                 <input type="text" class="form-control" id="apellido" name="apellido"
-                                    placeholder="Ej: Torres" required minlength="2" maxlength="20"
+                                    placeholder="Torres" required minlength="2" maxlength="20"
                                     value="{{ request.form.get('apellido', '')}}">
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 <label for="correo" class="form-label fw-medium">Correo
                                     Electrónico</label>
                                 <input type="email" class="form-control" id="correo" name="correo"
-                                    placeholder="Ej: maria123@correo.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                    placeholder="maria123@correo.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                     required value="{{ request.form.get('correo', '')}}">
                             </div>
                             <div class="mb-3 text-start">
