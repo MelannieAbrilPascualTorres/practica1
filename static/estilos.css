@@ -11,6 +11,20 @@ h1 {
   background-color: #eed5ff;
 }
 
+.card-2 {
+  background-color: #bdb2ff;
+}
+
+.card-3 {
+  background-color: #7acec8;
+}
+
+.btn-j1,
+.btn-j1:hover {
+  background-color: #21295c;
+   color: white;
+}
+
 .nav1 {
     background-color: #21295c;
 }

@@ -15,7 +15,7 @@
         <header class="row pt-5">
             <nav class="navbar nav1 navbar-expand-lg fixed-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand text-light d-flex align-items-center" href="#"> 
+                    <a class="navbar-brand text-light d-flex align-items-center" href="#">
                         Gestor de tareas
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -25,22 +25,26 @@
                     </button>
                     {% if session.get('logueado') %}
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav w-100">
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="http://127.0.0.1:5000/inicio">Tareas</a>
-                                
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
                             </li>
-                    {% endif %}
+                            <li class="nav-item ms-auto">
+                                <span class="nav-link text-light">
+                                    Hola, {{ session.get('usuario') }}
+                                </span>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
 
-        <main> 
+        <main>
             {% block contenido %}
             {% endblock %}
         </main>

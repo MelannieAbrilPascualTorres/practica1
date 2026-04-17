@@ -5,20 +5,41 @@
 {% block contenido %}
 
 <section class="container pt-4">
-    <div class="row mb-4 align-items-center">
-        <div class="col-12 col-md-6">
-            <div class="card text-bg-light mb-3">
-                <div class="card-header">Calculadora de Tasa Metabólica Basal (TMB)</div>
-                <div class="card-body">
-                    <h5 class="card-title">¿Qué es la Tasa Metabólica Basal?</h5>
-                    <p>La TMB indica cuantas calorias usa tu cuerpo solo para mantenerse vivo, incluso cuando estas en reposo. Conocer este valor nos permite saber cuantas calorías necesitamos como minimo cada dia.</p>
-                    <p>Ingresa tus datos para obtener tu TMB (Ingresa el numero solo)</p>
+    <div class="card card-2 card-2 mb-3">
+        <div class="card-header">Agregar tareas</div>
+        <div class="card-body">
+            <div class="row mt-3 align-items-center">
+                <div class="col-md-10">
+                    <input type="text" class="form-control" placeholder="Escribe tu tarea">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-j1 w-100">Crear</button>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
-            <img src="{{ url_for('static', filename='img/tmb.jpg') }}" class="img-fluid rounded-4"
-                alt="Dibujo de una persona revisando su TMB en una tablet.">
+    </div>
+
+    <div class="card card-3 mb-3">
+        <div class="card-header">Lista de tareas</div>
+        <div class="card-body">
+            <h6 class="card-title">Tus tareas</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-5">
+                            No has agregado ninguna tarea<br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
