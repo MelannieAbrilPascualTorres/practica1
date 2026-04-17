@@ -7,11 +7,10 @@
 <div class="container pt-5">
   <div class="row justify-content-center">
     <div class="col-md-5">
-      <div class="card text-bg-light p-4">
+      <div class="card card-1 p-4">
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
         <div class="text-center mb-3">
-          <img src="{{ url_for('static', filename='img/1000110823.png') }}" class="img-fluid rounded-4"
-                alt="icono">
+          <img src="{{ url_for('static', filename='img/1000110924.png') }}" class="img-fluid" alt="icono">
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -21,11 +20,15 @@
           {{ message }}
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-        {% endfor %} {% endif %} {% endwith %} {% if session.get('logueado') %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% if session.get('logueado') %}
         <div class="text-center">
           <h4>¡Hola {{ session.get('usuario') }}!</h4>
           <p>Ya has iniciado sesión.</p>
-          <a href="{{ url_for('logout') }}" class="btn btn-warning">Cerrar Sesión</a>
+          <a href="{{ url_for('logout') }}" class="btn btn-warning">Cerrar
+            Sesión</a>
         </div>
         {% else %}
         <form method="post" action="{{ url_for('validar') }}">
@@ -37,7 +40,7 @@
             <input type="password" class="form-control" name="password" placeholder="Contraseña" required />
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-danger">
+            <button type="submit" class="btn btn-primary">
               Iniciar Sesión
             </button>
           </div>
@@ -50,7 +53,7 @@
           </p>
           <p>
             ¿No tienes cuenta?
-            <a href="{{ url_for('registro') }}">Regístrate aquí</a>
+            <a href="{{ url_for('registrar') }}">Regístrate aquí</a>
           </p>
         </div>
         {% endif %}

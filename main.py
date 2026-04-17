@@ -20,24 +20,52 @@ USUARIOS_REGISTRADOS = {
 }
 
 @app.route('/')
-def registro():
+def sesion():
     return render_template('sesion.html')
 
-@app.route('/log')
-def log():
+@app.route('/log', methods=['GET', 'POST'])
+def registrar():
+    if request.method == 'POST':
+        error = None
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        fecha = request.form.get('fecha')
+        correo = request.form['correo']
+        password = request.form['password']
+        confirmPassword = request.form.get("confirmPassword")
+        if password != confirmPassword:
+            error = "Las contraseñas no coinciden"
+        elif correo in USUARIOS_REGISTRADOS:
+            error = "Este correo ya está registrado"
+        if error is not None:
+            flash(error, 'error')
+            return render_template('log.html')
+        else:
+            USUARIOS_REGISTRADOS[correo] = {
+                'password': password,
+                'nombre': f"{nombre} {apellido}",
+                'fecha' : fecha,
+                'correo': correo
+            }
+            flash(f"Registro exitoso: {nombre}. Ahora puedes iniciar sesión.", 'success')
+            return redirect(url_for('sesion'))
     return render_template('log.html')
 
 @app.route('/inicio')
 def inicio():
-    return render_template('inicio.html')
-
-@app.route('/principal')
-def tareas():
-    return render_template('principal.html', tareas=[])
+    if not session.get('logueado'):
+        return redirect(url_for('sesion'))
+    return render_template('inicio.html', tareas=[])
 
 @app.route('/contraseña')
 def contraseña():
     return render_template('contraseña.html')
+        
+@app.route("/sesion")
+def iniciar():
+    if session.get('logueado'):
+        return redirect(url_for('inicio'))
+    return render_template('sesion.html')
 
 @app.route('/validaLogin', methods=['GET','POST'])
 def validar():
@@ -46,7 +74,7 @@ def validar():
         password = request.form.get("password", '')
         if not correo or not password:
             flash('Por favor ingresa email y contraseña', 'error')
-            return render_template('inicio.html')
+            return render_template('sesion.html')
         
         elif correo in USUARIOS_REGISTRADOS:
             usuario = USUARIOS_REGISTRADOS[correo]
@@ -65,11 +93,11 @@ def validar():
     
     return redirect(url_for('sesion'))
 
-@app.route("/log")
+@app.route("/logout")
 def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')
-    return redirect(url_for('inicio'))
+    return redirect(url_for('sesion'))
 
 class GestorTareas:
     def __init__(self, uri: str = 'mongodb://localhost:27017/'):
