@@ -11,17 +11,20 @@
         <h2 class="text-center mb-4">Recuperar contraseña</h2>
         <form method="post" action="{{ url_for('validar') }}">
           <div class="mb-3">
-            <input type="email" class="form-control" name="correo" placeholder="Correo electrónico" required
+            <input type="email" class="form-control" name="correo" placeholder="Ingrese su correo electrónico" required
               value="{{ request.form.get('correo', '') }}" />
-          </div>
-          <div class="mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Contraseña" required />
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">
               Recuperar
             </button>
           </div>
+          <div class="text-center mt-3">
+          <p>
+            ¿Ya tienes cuenta?
+            <a href="{{ url_for('sesion') }}">Inicia sesión</a>
+          </p>
+        </div>
         </form>
       </div>
     </div>
