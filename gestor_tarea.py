@@ -35,12 +35,15 @@ class GestorTareas:
         except DuplicateKeyError:
             print(f"❌ Error: El email {email} ya está registrado")
             return None
-    
+
     def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
         """Obtener usuario por ID"""
         try:
             usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
             if usuario:
+                #verificar password tecleado por el usuario con la bd
+                #regresar los datos del usuario
+                #usuario['_id'] = str(usuario['_id'])
                 usuario['_id'] = str(usuario['_id'])
             return usuario
         except Exception as e:

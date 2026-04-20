@@ -1,0 +1,153 @@
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+import requests
+from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError, ConnectionFailure
+from bson.objectid import ObjectId
+from datetime import datetime, timedelta
+from typing import Optional, List, Dict
+import os
+import gestor_tarea
+
+app = Flask(__name__)
+
+app.secret_key = "clavececr3ta_xx23"
+
+USUARIOS_REGISTRADOS = {
+    'mel@correo.com':{
+        'password': "mel123",
+        'nombre': "melannie",
+        'correo': "mel@correo.com",
+    }
+}
+
+@app.route('/')
+def sesion():
+    return render_template('sesion.html')
+
+@app.route('/log', methods=['GET', 'POST'])
+def registrar():
+    if request.method == 'POST':
+        error = None
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        fecha = request.form.get('fecha')
+        correo = request.form['correo']
+        password = request.form['password']
+        confirmPassword = request.form.get("confirmPassword")
+        if password != confirmPassword:
+            error = "Las contraseñas no coinciden"
+        elif correo in USUARIOS_REGISTRADOS:
+            error = "Este correo ya está registrado"
+        if error is not None:
+            flash(error, 'error')
+            return render_template('log.html')
+        else:
+            USUARIOS_REGISTRADOS[correo] = {
+                'password': password,
+                'nombre': f"{nombre} {apellido}",
+                'fecha' : fecha,
+                'correo': correo
+            }
+            flash(f"Registro exitoso: {nombre}. Ahora puedes iniciar sesión.", 'success')
+            return redirect(url_for('sesion'))
+    return render_template('log.html')
+
+@app.route('/inicio')
+def inicio():
+    if not session.get('logueado'):
+        return redirect(url_for('sesion'))
+    return render_template('inicio.html')
+
+@app.route('/contraseña')
+def contraseña():
+    return render_template('contraseña.html')
+        
+@app.route("/sesion")
+def iniciar():
+    if session.get('logueado'):
+        return redirect(url_for('inicio'))
+    return render_template('sesion.html')
+
+@app.route('/validaLogin', methods=['GET','POST'])
+def validar():
+    if request.method == "POST":
+        correo = request.form.get("correo", '').strip()
+        password = request.form.get("password", '')
+        if not correo or not password:
+            flash('Por favor ingresa email y contraseña', 'error')
+            return render_template('sesion.html')
+        
+        elif correo in USUARIOS_REGISTRADOS:
+            usuario = USUARIOS_REGISTRADOS[correo]
+            if usuario['password'] == password:
+                session['logueado'] = True
+                session['usuario'] = usuario['nombre']
+                session['usuario_correo'] = correo
+                flash(f'¡Bienvenido {usuario["nombre"]}!', 'success')
+                return redirect(url_for('inicio'))
+            else:
+                flash('Contraseña incorrecta', 'error')
+        else:
+            flash('Usuario no encontrado', 'error')
+        
+        return render_template('sesion.html')
+    
+    return redirect(url_for('sesion'))
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash('Has cerrado sesión correctamente', 'info')
+    return redirect(url_for('sesion'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# Ejemplo de uso
+def ejemplo_uso():
+    # Inicializar gestor
+    gestor = GestorTareas()
+    
+    # Crear usuario
+    usuario_id = gestor.crear_usuario("Ana García", "ana@email.com")
+    print(f"Usuario creado con ID: {usuario_id}")
+    
+    if usuario_id:
+        # Crear tareas
+        tarea1 = gestor.crear_tarea(
+            usuario_id, 
+            "Aprender MongoDB", 
+            "Completar tutorial de PyMongo",
+            datetime.now() + timedelta(days=3)
+        )
+        print(f"Tarea creada: {tarea1}")
+        
+        tarea2 = gestor.crear_tarea(
+            usuario_id,
+            "Hacer ejercicio",
+            "Ir al gimnasio 3 veces esta semana"
+        )
+        
+        # Agregar etiqueta
+        gestor.agregar_etiqueta(tarea1, "programación")
+        gestor.agregar_etiqueta(tarea1, "estudio")
+        
+        # Listar tareas
+        tareas = gestor.obtener_tareas_usuario(usuario_id)
+        print(f"\nTareas de {usuario_id}:")
+        for t in tareas:
+            print(f"  - {t['titulo']} [{t['estado']}]")
+        
+        # Actualizar estado
+        gestor.actualizar_estado_tarea(tarea1, "en_progreso")
+        
+        # Estadísticas
+        stats = gestor.estadisticas_usuario(usuario_id)
+        print(f"\nEstadísticas: {stats}")
+        
+        # Tareas urgentes
+        urgentes = gestor.tareas_urgentes(72)
+        print(f"\nTareas urgentes próximos 3 días: {len(urgentes)}")
+    
+    # Cerrar conexión
+    gestor.cerrar_conexion()
