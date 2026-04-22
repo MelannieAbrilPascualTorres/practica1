@@ -1,10 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import requests
-from pymongo import MongoClient
-from pymongo.errors import DuplicateKeyError, ConnectionFailure
-from bson.objectid import ObjectId
 from datetime import datetime, timedelta
-from typing import Optional, List, Dict
 import os
 import gestor_tarea
 
@@ -100,9 +96,6 @@ def logout():
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('sesion'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 # Ejemplo de uso
 def ejemplo_uso():
     # Inicializar gestor
@@ -151,3 +144,6 @@ def ejemplo_uso():
     
     # Cerrar conexión
     gestor.cerrar_conexion()
+
+if __name__ == '__main__':
+    app.run(debug=True)
