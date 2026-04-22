@@ -90,6 +90,14 @@ def validar():
     
     return redirect(url_for('sesion'))
 
+@app.route('/recuperar', methods=['GET','POST'])
+def recuperar():
+    if request.method == "POST":
+        password = request.form.get("password", '')
+        if not password:
+            flash('Por favor ingrese su contraseña', 'error')
+            return render_template('sesion.html')
+
 @app.route("/logout")
 def logout():
     session.clear()
