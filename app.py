@@ -64,7 +64,7 @@ def validar():
             return render_template('sesion.html')
         
         usuario = gestor.verificar_usuario(correo, password)
-        if usuario['password'] == password:
+        if usuario:
             session['logueado'] = True
             session['usuario'] = usuario['nombre']
             session['usuario_correo'] = correo
@@ -79,11 +79,17 @@ def validar():
 @app.route('/recuperar', methods=['GET','POST'])
 def recuperar():
     if request.method == "POST":
-        password = request.form.get("password", '')
-        if not password:
-            flash('Por favor ingrese su contraseña', 'error')
-            return render_template('sesion.html')
-
+        correo = request.form.get("correo", '').strip()
+        if not correo:
+            flash('Por favor ingrese su correo', 'error')
+            return render_template('contraseña.html')
+        usuario = gestor.usuarios.find_one({"email": correo})
+        if usuario:
+            flash('Se ha enviado un código para recuperar tu contraseña', 'success')
+        else:
+            flash('Este correo no está registrado', 'error')
+            return render_template('contraseña.html')
+        return render_template('sesion.html')
 @app.route("/logout")
 def logout():
     session.clear()
