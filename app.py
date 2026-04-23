@@ -2,19 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import requests
 from datetime import datetime, timedelta
 import os
-import gestor_tarea
+from gestor_tarea import GestorTareas
 
 app = Flask(__name__)
 
 app.secret_key = "clavececr3ta_xx23"
 
-USUARIOS_REGISTRADOS = {
-    'mel@correo.com':{
-        'password': "mel123",
-        'nombre': "melannie",
-        'correo': "mel@correo.com",
-    }
-}
+gestor = GestorTareas()
 
 @app.route('/')
 def sesion():
@@ -23,7 +17,6 @@ def sesion():
 @app.route('/log', methods=['GET', 'POST'])
 def registrar():
     if request.method == 'POST':
-        error = None
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         fecha = request.form.get('fecha')
@@ -31,21 +24,18 @@ def registrar():
         password = request.form['password']
         confirmPassword = request.form.get("confirmPassword")
         if password != confirmPassword:
-            error = "Las contraseñas no coinciden"
-        elif correo in USUARIOS_REGISTRADOS:
-            error = "Este correo ya está registrado"
-        if error is not None:
-            flash(error, 'error')
+            flash("Las contraseñas no coinciden", 'error')
             return render_template('log.html')
-        else:
-            USUARIOS_REGISTRADOS[correo] = {
-                'password': password,
-                'nombre': f"{nombre} {apellido}",
-                'fecha' : fecha,
-                'correo': correo
-            }
-            flash(f"Registro exitoso: {nombre}. Ahora puedes iniciar sesión.", 'success')
-            return redirect(url_for('sesion'))
+        usuario_id = gestor.crear_usuario(
+            nombre=f"{nombre} {apellido}",
+            email=correo,
+            password=password
+        )
+        if not usuario_id:
+            flash("Este correo ya está registrado", 'error')
+            return render_template('log.html')
+        flash(f"Registro exitoso: {nombre}. Ahora puedes iniciar sesión.", 'success')
+        return redirect(url_for('sesion'))
     return render_template('log.html')
 
 @app.route('/inicio')
@@ -73,20 +63,16 @@ def validar():
             flash('Por favor ingresa email y contraseña', 'error')
             return render_template('sesion.html')
         
-        elif correo in USUARIOS_REGISTRADOS:
-            usuario = USUARIOS_REGISTRADOS[correo]
-            if usuario['password'] == password:
-                session['logueado'] = True
-                session['usuario'] = usuario['nombre']
-                session['usuario_correo'] = correo
-                flash(f'¡Bienvenido {usuario["nombre"]}!', 'success')
-                return redirect(url_for('inicio'))
-            else:
-                flash('Contraseña incorrecta', 'error')
+        usuario = gestor.verificar_usuario(correo, password)
+        if usuario['password'] == password:
+            session['logueado'] = True
+            session['usuario'] = usuario['nombre']
+            session['usuario_correo'] = correo
+            flash(f'¡Bienvenido {usuario["nombre"]}!', 'success')
+            return redirect(url_for('inicio'))
         else:
-            flash('Usuario no encontrado', 'error')
-        
-        return render_template('sesion.html')
+            flash('Correo o contraseña incorrecta', 'error')
+            return render_template('sesion.html')
     
     return redirect(url_for('sesion'))
 
