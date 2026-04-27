@@ -63,7 +63,7 @@ def validar():
             flash('Por favor ingresa email y contraseña', 'error')
             return render_template('sesion.html')
         
-        usuario = gestor.verificar_usuario(correo, password)
+        usuario = gestor.obtener_usuario2(correo, password)
         if usuario:
             session['logueado'] = True
             session['usuario'] = usuario['nombre']

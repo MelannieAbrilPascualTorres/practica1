@@ -56,7 +56,7 @@ class GestorTareas:
             print(f"Error al obtener usuario: {e}")
             return None
         
-    def verificar_usuario(self, email: str, password: str) -> Optional[Dict]:
+    def obtener_usuario2(self, email: str, password: str) -> Optional[Dict]:
         try:
             usuario = self.usuarios.find_one({"email": (email)})
             if usuario and usuario ["password"] == password:
