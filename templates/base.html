@@ -26,16 +26,17 @@
                     {% if session.get('logueado') %}
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav w-100">
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="http://127.0.0.1:5000/inicio">Tareas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                            </li>
-                            <li class="nav-item ms-auto">
-                                <span class="nav-link text-light">
-                                    Hola, {{ session.get('usuario') }}
-                                </span>
+                            <li class="nav-item dropdown ms-auto">
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ session.get('usuario') }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" href="http://127.0.0.1:5000/inicio">Tareas</a>
+                                    </li>
+                                    <li class="dropdown-item"><a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                                </ul>
                             </li>
                             {% endif %}
                         </ul>
