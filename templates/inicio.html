@@ -8,14 +8,16 @@
     <div class="card card-2 card-2 mb-3">
         <div class="card-header">Agregar tareas</div>
         <div class="card-body">
-            <div class="row mt-3 align-items-center">
-                <div class="col-md-10">
-                    <input type="text" class="form-control" placeholder="Escribe tu tarea">
+            <form action="{{ url_for('agregar_tarea') }}" method="POST">
+                <div class="row mt-3 align-items-center">
+                    <div class="col-md-10">
+                        <input type="text" name="titulo" class="form-control" placeholder="Escribe tu tarea" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-j1 w-100">Crear</button>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <button class="btn btn-j1 w-100">Crear</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -33,11 +35,57 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% if tareas %}
+                    {% for tarea in tareas %}
+                    <tr>
+                        <td>
+                            {{ tarea.fecha_creacion.strftime('%d/%m/%Y') }}
+                        </td>
+                        <td>
+                            {{ tarea.titulo }}
+                        </td>
+                        <td>
+                            <form action="{{ url_for('cambiar_estado', tarea_id=tarea._id) }}" method="POST">
+                                <div class="d-flex">
+                                    <select name="estado" class="form-select">
+                                        <option value="pendiente" {% if tarea.estado=='pendiente' %}selected{% endif %}>
+                                            Pendiente
+                                        </option>
+                                        <option value="en_progreso" {% if tarea.estado=='en_progreso' %}selected{% endif
+                                            %}>
+                                            En progreso
+                                        </option>
+                                        <option value="completada" {% if tarea.estado=='completada' %}selected{% endif
+                                            %}>
+                                            Completada
+                                        </option>
+                                        <option value="cancelada" {% if tarea.estado=='cancelada' %}selected{% endif %}>
+                                            Cancelada
+                                        </option>
+                                    </select>
+                                    <button class="btn btn-success btn-sm">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('eliminar_tarea', tarea_id=tarea._id) }}" method="POST">
+
+                                <button class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
                     <tr>
                         <td colspan="4" class="text-center text-muted py-5">
                             No has agregado ninguna tarea<br>
                         </td>
                     </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>

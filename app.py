@@ -68,8 +68,9 @@ def validar():
             session['logueado'] = True
             session['usuario'] = usuario['nombre']
             session['usuario_correo'] = correo
+            session['usuario_id'] = usuario['_id']
             flash(f'¡Bienvenido {usuario["nombre"]}!', 'success')
-            return redirect(url_for('inicio'))
+            return redirect(url_for('tareas'))
         else:
             flash('Correo o contraseña incorrecta', 'error')
             return render_template('sesion.html')
@@ -90,11 +91,57 @@ def recuperar():
             flash('Este correo no está registrado', 'error')
             return render_template('contraseña.html')
         return render_template('sesion.html')
+    
 @app.route("/logout")
 def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('sesion'))
+
+@app.route("/tareas")
+def tareas():
+    if not session.get('logueado'):
+        return redirect(url_for('sesion'))
+    
+    usuario = gestor.usuarios.find_one({
+        "email": session['usuario_correo']
+    })
+    lista_tareas = gestor.obtener_tareas_usuario(str(usuario['_id']))
+    return render_template(
+        'inicio.html',
+        tareas=lista_tareas
+    )
+
+@app.route("/agregar_tarea", methods=['POST'])
+def agregar_tarea():
+    if not session.get('logueado'):
+        return redirect(url_for('sesion'))
+    titulo = request.form.get('titulo')
+    if titulo:
+        usuario = gestor.usuarios.find_one({
+            "email": session['usuario_correo']
+        })
+
+        gestor.crear_tarea(
+            usuario_id=str(usuario['_id']),
+            titulo=titulo
+        )
+    return redirect(url_for('tareas'))
+
+
+@app.route("/cambiar_estado/<tarea_id>", methods=['POST'])
+def cambiar_estado(tarea_id):
+    nuevo = request.form.get('estado')
+    gestor.actualizar_estado_tarea(
+        tarea_id,
+        nuevo
+    )
+    return redirect(url_for('tareas'))
+
+@app.route('/eliminar_tarea/<tarea_id>', methods=['POST'])
+def eliminar_tarea(tarea_id):
+    gestor.eliminar_tarea(tarea_id)
+    return redirect(url_for('tareas'))
 
 # Ejemplo de uso
 def ejemplo_uso():
